@@ -31,5 +31,5 @@ $cfg['ServerDefault'] = 1;
 
 $cfg['MaxNavigationItems'] = 250;
 $cfg['LoginCookieValidity'] = 72000;
-$cfg['Servers'][$i]['only_db'] = 'docker%';
+$cfg['Servers'][$i]['only_db'] = 'robgd%';
 $cfg['ShowAll'] = true;

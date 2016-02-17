@@ -29,7 +29,7 @@ RUN chown docker:docker /home/docker/run.sh \
 USER docker
 ENV HOME /home/docker
 
-WORKDIR /var/www/$PROJECT_NAME
+WORKDIR /var/www/robgd
 
 # Define default command.
 CMD ["/home/docker/run.sh"]

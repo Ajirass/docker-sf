@@ -64,8 +64,8 @@ import_database() {
         echo "==> Unzip prod.sql.tar.gz"
         pv prod.sql.tar.gz | tar xzf - -C .
         echo "==> Import database please wait done message"
-        pv prod.sql | mysql -uroot ${MARIADB_DATABASE}
-        rm prod.sql
+        pv database.sql | mysql -uroot ${MARIADB_DATABASE}
+        rm database.sql
         echo "========================= DONE =========================="
     fi
 

@@ -26,5 +26,4 @@ RUN chmod +x /root/*.sh
 CMD ["/root/run.sh"]
 
 EXPOSE 80
-#EXPOSE 8080
 EXPOSE 443

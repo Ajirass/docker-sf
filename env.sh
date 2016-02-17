@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PROJECT_NAME=project_name
+export PROJECT_NAME=docker-symfony
 
 # Path where your project is stored
 export PROJECT_PATH=$HOME/www

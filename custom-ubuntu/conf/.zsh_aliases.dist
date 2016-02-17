@@ -11,7 +11,7 @@ alias ci='composer install --prefer-dist -o'
 alias phps='php -S localhost:8080'
 
 # Symfony2
-alias cc='rm -rf /opt/*PROJECT_NAME/cache/* /opt/$PROJECT_NAME/logs/*'
+alias cc='rm -rf /opt/robgd/cache/* /opt/robgd/logs/*'
 alias dump='php app/console assets:install --symlink && php app/console assetic:dump'
 
 # Symfony3

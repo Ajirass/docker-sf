@@ -1,7 +1,7 @@
 server {
    listen 80;
 
-   root /var/www/$PROJECT_NAME/web;
+   root /var/www/robgd/web;
    index app_dev.php;
 
    server_name
@@ -28,6 +28,6 @@ server {
 
    client_max_body_size 30M;
 
-   access_log /var/log/nginx/${PROJECT_NAME}_access.log;
-   error_log /var/log/nginx/${PROJECT_NAME}_error.log;
+   access_log /var/log/nginx/robgd_access.log;
+   error_log /var/log/nginx/robgd_error.log;
 }

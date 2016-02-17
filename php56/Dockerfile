@@ -32,7 +32,7 @@ RUN sed -i "s@listen = /var/run/php5-fpm.sock@listen = 9000@" /etc/php5/fpm/pool
     && sed -i "s@group = www-data@group = docker@" /etc/php5/fpm/pool.d/www.conf
 
 WORKDIR /var/www/$PROJECT_NAME
-COPY ./conf.d/30-docker.ini /etc/php5/fpm/conf.d/30-docker.ini
+COPY ./conf.d/30-robgd.ini /etc/php5/fpm/conf.d/30-robgd.ini
 
 COPY ./run.sh /root/run.sh
 RUN chmod 775 /root/*.sh

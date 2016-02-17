@@ -2,7 +2,7 @@ application:
     build: ./application
     container_name: project_application
     volumes:
-        - $PROJECT_PATH:/var/www/$PROJECT_NAME
+        - $PROJECT_PATH/$PROJECT_NAME:/var/www/robgd
     volumes_from:
         - sfdata
     tty: true
@@ -10,7 +10,7 @@ sfdata:
     build: ./sfdata
     container_name: sfdata
     volumes:
-        - /opt/$PROJECT_NAME:/opt/$PROJECT_NAME
+        - /opt/robgd:/opt/robgd
     tty: true
 manager:
     build: ./manager

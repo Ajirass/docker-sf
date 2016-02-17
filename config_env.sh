@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 
-#source env.sh
-
-# Path where your project is stored
-export PROJECT_PATH=$1
-# Path where docker is stored
-export DOCKER_PATH=$2
-export USER_ID=$3
-
+source env.sh
 
 # Colors
 COL_RESET=$'\e[39;49;00m'
