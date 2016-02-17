@@ -1,0 +1,77 @@
+application:
+    build: ./application
+    container_name: project_application
+    volumes:
+        - $PROJECT_PATH:/var/www/$PROJECT_NAME
+    volumes_from:
+        - sfdata
+    tty: true
+sfdata:
+    build: ./sfdata
+    container_name: sfdata
+    volumes:
+        - /opt/$PROJECT_NAME:/opt/$PROJECT_NAME
+    tty: true
+manager:
+    build: ./manager
+    container_name: manager
+    volumes_from:
+        - application
+    ports:
+        - 8081:8081
+    links:
+        - redis:redis
+        - db:db
+        - elasticsearch:es
+db:
+    build: ./mariadb
+    container_name: mariadb
+    env_file:
+        - ./env/mysql.env
+    volumes:
+        - $DOCKER_PATH/$PROJECT_NAME/mysql/data:/var/lib/mysql:rw
+    ports:
+        - 3306:3306
+elasticsearch:
+    build: ./elasticsearch
+    container_name: elasticsearch
+    env_file:
+        - ./env/elasticsearch.env
+    volumes:
+        - $DOCKER_PATH/$PROJECT_NAME/elasticsearch/data:/usr/share/elasticsearch/data
+    ports:
+        - 9200:9200
+        - 9300:9300
+redis:
+    build: ./redis
+    container_name: redis
+    volumes:
+        - $DOCKER_PATH/$PROJECT_NAME/redis:/data
+        - $DOCKER_PATH/$PROJECT_NAME/logs/redis:/var/log/redis
+    tty: true
+    ports:
+        - 6379:6379
+php:
+    build: ./php56
+    container_name: php
+    volumes_from:
+        - application
+    ports:
+        - 9000:9000
+        - 9001:9001
+    links:
+        - db:db
+        - redis:redis
+        - elasticsearch:es
+nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+        - 80:80
+    volumes_from:
+        - application
+    volumes:
+        - $DOCKER_PATH/$PROJECT_NAME/logs/nginx:/var/log/nginx
+    links:
+        - db:db
+        - php:php

@@ -1,0 +1,37 @@
+alias l='ls -ACFl'
+alias lh='ls -ACFlh'
+
+# Development
+alias salt='php -r "echo sha1(uniqid(mt_rand(), true));" | pbcopy'
+alias password='php ~/password.php | pbcopy';
+
+# PHP
+alias cu='composer update --prefer-dist -o'
+alias ci='composer install --prefer-dist -o'
+alias phps='php -S localhost:8080'
+
+# Symfony2
+alias cc='rm -rf /opt/*PROJECT_NAME/cache/* /opt/$PROJECT_NAME/logs/*'
+alias dump='php app/console assets:install --symlink && php app/console assetic:dump'
+
+# Symfony3
+alias cc3='rm -rf var/cache/* var/logs/*'
+
+# Git
+alias gc='git checkout'
+alias gsp='git stash pop'
+alias gs='git stash'
+alias gpr='git pull --rebase'
+alias gpp='git pull --rebase && git push'
+gcom() { git commit -am "$*"; }
+
+# Symfony2
+alias fixer='php php-cs-fixer.phar fix src/ --level=all && git commit -am "cs fix"'
+alias gen='php app/console doctrine:generate:entities --no-backup'
+alias schema='php app/console doctrine:schema:update --force --dump-sql'
+alias dump='php app/console assetic:dump'
+alias fix='git commit -am "fix"'
+alias fixpsr='git commit -am "PSR Rules fix"'
+alias populate='php app/console fos:elastica:populate'
+alias xdebug-enable='sudo php5enmod xdebug && sudo service php5-fpm restart'
+alias xdebug-disable='sudo php5dismod xdebug && sudo service php5-fpm restart'
