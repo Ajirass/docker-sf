@@ -14,6 +14,6 @@ install_db
 start_and_check_mysql
 create_custom_database
 create_admin_user
-import_database
+#import_database
 
 tail -f /dev/null
