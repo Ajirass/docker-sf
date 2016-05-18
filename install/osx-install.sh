@@ -130,8 +130,7 @@ mv composer.phar /usr/local/bin/composer
 echoSuccess "======= Done ! ======="
 
 echoInfo "==> Install docker-machine nfs script"
-sudo cp docker-machine-nfs /usr/local/bin/docker-machine-nfs
-sudo chmod +x /usr/local/bin/docker-machine-nfs
+brew install docker-machine-nfs
 echoSuccess "======= Done ! ======="
 
 cp ./.gitignore_global ~/.gitignore_global
@@ -143,7 +142,7 @@ echoInfo "==> Create docker machine dev"
 sh create-machine.sh
 echoInfo "==> Mount local path to doker-machine please wait ... "
 sleep 5
-sudo docker-machine-nfs
+sudo docker-machine-nfs --shared-folder=/Users/$USER --nfs-config="-alldirs -maproot=0" --mount-opts="noatime,soft,nolock,vers=3,udp,proto=udp,rsize=8192,wsize=8192,namlen=255,timeo=10,retrans=3,nfsvers=3"
 echo "${GREEN}======= Done ! =======${COL_RESET}"
 
 echo "${YELLOW}==> Install oh my zsh${COL_RESET}"
