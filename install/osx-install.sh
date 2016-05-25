@@ -17,10 +17,10 @@ BLUE=$'\e[34;01m'
 MAGENTA=$'\e[35;01m'
 CYAN=$'\e[36;01m'
 
-DOCKER_PATH=$HOME/docker
-PROJECT_PATH=$HOME/www
-PROJECT_NAME=project_name
-GITHUB_LINK=github_link
+#DOCKER_PATH=$HOME/docker/docker-sf
+#PROJECT_PATH=$HOME/www
+#PROJECT_NAME=project_name
+#GITHUB_LINK=github_link
 
 # @info:    Prints error messages
 # @args:    error-message
@@ -47,7 +47,7 @@ echoSuccess ()
 # @args:    success-message
 echoInfo ()
 {
-  printf "\033[1;34m[INFO] \033[0m$1"
+  echo "\033[1;34m[INFO] \033[0m$1"
 }
 
 # @info:    Prints property messages
@@ -59,11 +59,11 @@ echoProperties ()
 
 install_github_ssh_key() {
     while true; do
-    read -p "${GREEN} - Enter your github email address: ${COL_RESET}" email
-    case $email in
-        ?*@?*.?* ) ssh-keygen -t rsa -b 4096 -C "$email"; break;;
-        * ) echo "      ${RED}Please enter a valid email${COL_RESET}";;
-    esac
+        read -p "${GREEN} - Enter your github email address: ${COL_RESET}" email
+        case $email in
+            ?*@?*.?* ) ssh-keygen -t rsa -b 4096 -C "$email"; break;;
+            * ) echo "      ${RED}Please enter a valid email${COL_RESET}";;
+        esac
     done
 
     echo
@@ -86,9 +86,19 @@ install_github_ssh_key() {
     break
 }
 
-echoInfo "======================================================"
-echoInfo "=============== Install Symfony2 stack ==============="
-echoInfo "======================================================"
+echo "============================================================="
+echo "=============== Install Symfony3 Docker stack ==============="
+echo "============================================================="
+
+echo
+
+default=$HOME/docker/docker-sf
+read -p "- Enter the docker path (${YELLOW}$default${COL_RESET}): " DOCKER_PATH
+DOCKER_PATH=${DOCKER_PATH:-$default}
+
+default=$HOME/www
+read -p "- Enter your website (${YELLOW}$default${COL_RESET}): " PROJECT_PATH
+PROJECT_PATH=${PROJECT_PATH:-$default}
 
 #
 # Check if Homebrew is installed
@@ -100,59 +110,97 @@ if [[ $? != 0 ]] ; then
     echoInfo "==> Install Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
+    echoInfo "brew update && brew upgrade"
     # Make sure brew is up to date
     brew update && brew upgrade
     echoSuccess "======= Done ! ======="
 fi
 
-echoinfo "==> Install brew-cask"
+echoInfo "==> Install brew-cask"
 # Homebrew Cask extends Homebrew and brings its elegance, simplicity, and speed to OS X applications and large binaries alike.
 brew tap caskroom/cask
 brew install brew-cask
 echoSuccess "======= Done ! ======="
 
-echoInfo "==> Install Virtualbox"
-brew cask install virtualbox
-echoSuccess "======= Done ! ======="
+read -p "Install Virtualbox (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echoInfo "==> Install Virtualbox"
+    brew cask install virtualbox
+    echoSuccess "======= Done ! ======="
+fi
 
 echoInfo "==> Install some libraries with brew"
-# Install amazon web services command cli
-brew install awscli
-brew install wget
-brew install git
-brew install docker
-brew install docker-compose
-brew install docker-machine
-brew install gettext
+for pkg in wget git docker docker-compose docker-machine gettext docker-machine-nfs; do
+    echoInfo "Trying to install '$pkg'..."
+    sleep 0.3
+    if brew list -1 | grep -q "^${pkg}\$"; then
+        echo " - '$pkg' already installed"
+    else
+        brew install $pkg
+    fi
+done
 brew link --force gettext
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
 echoSuccess "======= Done ! ======="
 
-echoInfo "==> Install docker-machine nfs script"
-brew install docker-machine-nfs
-echoSuccess "======= Done ! ======="
+read -p "Install composer (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+    echoSuccess "======= Done ! ======="
+fi
 
-cp ./.gitignore_global ~/.gitignore_global
-git config --global core.excludesfile ~/.gitignore_global
+read -p "Configure gitignore global (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    cp ./.gitignore_global ~/.gitignore_global
+    git config --global core.excludesfile ~/.gitignore_global
+fi
 
 cd $DOCKER_PATH
+
+read -p "Create docker-machine dev (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echoInfo "==> Create docker machine dev"
+    sh create-machine.sh
+    default=$HOME/.bash_profile
+    read -p "- Enter your bashprofile path (${YELLOW}$default${COL_RESET}): " BASH_PATH
+    BASH_PATH=${BASH_PATH:-$default}
+    docker-machine env dev >> $BASH_PATH
+    echoSuccess "======= Done ! ======="
+fi
+
 sh config_env.sh $PROJECT_PATH $DOCKER_PATH $(id -u)
-echoInfo "==> Create docker machine dev"
-sh create-machine.sh
+
 echoInfo "==> Mount local path to doker-machine please wait ... "
 sleep 5
-sudo docker-machine-nfs --shared-folder=/Users/$USER --nfs-config="-alldirs -maproot=0" --mount-opts="noatime,soft,nolock,vers=3,udp,proto=udp,rsize=8192,wsize=8192,namlen=255,timeo=10,retrans=3,nfsvers=3"
+docker-machine-nfs dev --shared-folder=/Users/$USER --nfs-config="-alldirs -maproot=0" --mount-opts="noatime,soft,nolock,vers=3,udp,proto=udp,rsize=8192,wsize=8192,namlen=255,timeo=10,retrans=3,nfsvers=3"
 echo "${GREEN}======= Done ! =======${COL_RESET}"
 
-echo "${YELLOW}==> Install oh my zsh${COL_RESET}"
-sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-cp zsh_aliases ~/.zsh_aliases
-echo ". ~/.zsh_aliases" >> ~/.zshrc
-echo "${GREEN}======= Done ! =======${COL_RESET}"
+read -p "Install oh my zsh (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo "${YELLOW}==> Install oh my zsh${COL_RESET}"
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    cp zsh_aliases ~/.zsh_aliases
+    echo ". ~/.zsh_aliases" >> ~/.zshrc
+    echo "${GREEN}======= Done ! =======${COL_RESET}"
+fi
 
-echoInfo "==> Cloning project into $PROJECT_PATH/$PROJECT_NAME "
-mkdir ~/www
-git clone $GITHUB_LINK $PROJECT_PATH/$PROJECT_NAME
-cp ./ips.php $PROJECT_PATH/$PROJECT_NAME/web
-echoSuccess "======= Done ! ======="
+read -p "Clone your github project into your website path (y/n)? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echoInfo "==> Cloning project into $PROJECT_PATH/$PROJECT_NAME "
+    mkdir ~/www
+    git clone $GITHUB_LINK $PROJECT_PATH/$PROJECT_NAME
+    cp ./ips.php $PROJECT_PATH/$PROJECT_NAME/web
+    echoSuccess "======= Done ! ======="
+fi
