@@ -5,7 +5,7 @@ server {
    index app_dev.php;
 
    server_name
-      $PROJECT_NAME.loc
+      hobbiz.loc
    ;
 
    location / {

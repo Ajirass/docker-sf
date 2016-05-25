@@ -31,5 +31,5 @@ $cfg['ServerDefault'] = 1;
 
 $cfg['MaxNavigationItems'] = 250;
 $cfg['LoginCookieValidity'] = 72000;
-$cfg['Servers'][$i]['only_db'] = 'robgd%';
+$cfg['Servers'][$i]['only_db'] = 'Hobbiz%';
 $cfg['ShowAll'] = true;
