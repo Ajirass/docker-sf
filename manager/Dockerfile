@@ -20,7 +20,7 @@ RUN npm install -g redis-commander && \
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-COPY ./conf.d/30-docker.ini /etc/php5/cli/conf.d/30-docker.ini
+COPY ./conf.d/30-robgd.ini /etc/php5/cli/conf.d/30-robgd.ini
 COPY ./run.sh /home/docker/run.sh
 
 RUN chown docker:docker /home/docker/run.sh \
