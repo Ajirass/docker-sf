@@ -1,4 +1,5 @@
 .idea
 docker-compose.yml
 custom-ubuntu/Dockerfile
+custom-ubuntu/conf/.zsh_aliases
 create-machine/bootsync.sh

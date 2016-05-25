@@ -18,4 +18,6 @@ rm -f ./custom-ubuntu/Dockerfile
 envsubst < "./custom-ubuntu/Dockerfile.dist" > "./custom-ubuntu/Dockerfile"
 rm -f ./create-machine/bootsync.sh
 envsubst < "./create-machine/bootsync.sh.dist" > "./create-machine/bootsync.sh"
+rm -f ./custom-ubuntu/conf/.zsh_aliases
+envsubst < "./custom-ubuntu/conf/.zsh_aliases.dist" > "./custom-ubuntu/conf/.zsh_aliases"
 echo "${GREEN}======= Done ! =======${COL_RESET}"

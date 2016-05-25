@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PROJECT_NAME=Spare-time
+export PROJECT_NAME=Hobbiz
 
 # Path where your project is stored
 export PROJECT_PATH=$HOME/www
