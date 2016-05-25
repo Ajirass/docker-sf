@@ -15,7 +15,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y mariadb-
 # Define mountable directories.
 VOLUME ["/etc/mysql", "/var/lib/mysql"]
 
-COPY ./prod.sql.tar.gz /root/prod.sql.tar.gz
 COPY ./conf/my.cnf /etc/mysql/conf.d/my.cnf
 COPY ./scripts/functions.sh /root/scripts/functions.sh
 COPY ./scripts/run.sh /root/run.sh
