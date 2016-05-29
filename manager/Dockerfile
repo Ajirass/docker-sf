@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN php5dismod xdebug
 
+RUN wget https://phar.phpunit.de/phpunit.phar && chmod +x phpunit.phar && mv phpunit.phar /usr/local/bin/phpunit
+
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 RUN npm install -g redis-commander && \

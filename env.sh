@@ -3,7 +3,7 @@
 export PROJECT_NAME=Hobbiz
 
 # Path where your project is stored
-export PROJECT_PATH=$HOME/www
+export PROJECT_PATH=$HOME/Sites
 
 # Path where docker is stored
 export DOCKER_PATH=$HOME/docker
