@@ -1,7 +1,7 @@
 server {
    listen 80;
 
-   root /var/www/robgd/web;
+   root /var/www/hobbiz-client/web;
    index app_dev.php;
 
    server_name

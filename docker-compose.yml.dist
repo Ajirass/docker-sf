@@ -52,7 +52,7 @@ redis:
     ports:
         - 6379:6379
 php:
-    build: ./php56
+    build: ./php7
     container_name: php
     volumes_from:
         - application

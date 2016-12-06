@@ -2,6 +2,6 @@
 
 chown -R docker:docker /opt/robgd
 
-service php5-fpm start
+service php7.0-fpm start
 
 tail -f /dev/null

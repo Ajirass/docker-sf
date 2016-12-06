@@ -7,13 +7,15 @@ RUN apt-get update && apt-get install -y nginx php5-common php5-curl php5-fpm \
     && rm -rf /var/lib/apt/lists/*
 
 COPY ./nginx.conf /etc/nginx/
-COPY ./sites-available/robgd /etc/nginx/sites-available/robgd
+COPY ./sites-available/hobbiz-api /etc/nginx/sites-available/hobbiz-api
+COPY ./sites-available/hobbiz-client /etc/nginx/sites-available/hobbiz-client
 COPY ./sites-available/phpmyadmin /etc/nginx/sites-available/phpmyadmin
 
 COPY ./config.inc.php /etc/phpmyadmin/config.inc.php
 RUN mkdir -p /var/www
 RUN ln -s /usr/share/phpmyadmin /var/www/phpmyadmin
-RUN ln -s /etc/nginx/sites-available/robgd /etc/nginx/sites-enabled/robgd
+RUN ln -s /etc/nginx/sites-available/hobbiz-api /etc/nginx/sites-enabled/hobbiz-api
+RUN ln -s /etc/nginx/sites-available/hobbiz-client /etc/nginx/sites-enabled/hobbiz-client
 RUN ln -s /etc/nginx/sites-available/phpmyadmin /etc/nginx/sites-enabled/phpmyadmin
 RUN rm /etc/nginx/sites-enabled/default
 

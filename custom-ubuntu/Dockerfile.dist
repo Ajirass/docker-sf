@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
     ntp \
     && apt-get clean
 
-RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php5-5.6 && apt-get update
+RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php && apt-get update
 
 RUN echo 'Europe/Paris' | sudo tee /etc/timezone && sudo dpkg-reconfigure -f noninteractive tzdata
 
