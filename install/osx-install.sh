@@ -72,7 +72,7 @@ install_github_ssh_key() {
     ssh-add ~/.ssh/id_rsa
     cat ~/.ssh/id_rsa.pub
 
-    echo ""
+    echo
 
     while true; do
         read -p "${GREEN} - Now copy past your ssh-rsa into github (see https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account) and press enter when its done !${COL_RESET} " yn
@@ -122,13 +122,15 @@ brew tap caskroom/cask
 brew install brew-cask
 echoSuccess "======= Done ! ======="
 
-read -p "Install Virtualbox (y/n)? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    echoInfo "==> Install Virtualbox"
-    brew cask install virtualbox
-    echoSuccess "======= Done ! ======="
+if  [[ "$(vboxmanage --version)" == 0 ]] ; then
+    read -p "Install Virtualbox (y/n)? " -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        echoInfo "==> Install Virtualbox"
+        brew cask install virtualbox
+        echoSuccess "======= Done ! ======="
+    fi
 fi
 
 echoInfo "==> Install some libraries with brew"
@@ -153,14 +155,6 @@ then
     echoSuccess "======= Done ! ======="
 fi
 
-read -p "Configure gitignore global (y/n)? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    cp ./.gitignore_global ~/.gitignore_global
-    git config --global core.excludesfile ~/.gitignore_global
-fi
-
 cd $DOCKER_PATH
 
 read -p "Create docker-machine dev (y/n)? " -n 1 -r
@@ -183,24 +177,3 @@ sleep 5
 docker-machine-nfs dev --shared-folder=/Users/$USER --nfs-config="-alldirs -maproot=0" --mount-opts="noatime,soft,nolock,vers=3,udp,proto=udp,rsize=8192,wsize=8192,namlen=255,timeo=10,retrans=3,nfsvers=3"
 echo "${GREEN}======= Done ! =======${COL_RESET}"
 
-read -p "Install oh my zsh (y/n)? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    echo "${YELLOW}==> Install oh my zsh${COL_RESET}"
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    cp zsh_aliases ~/.zsh_aliases
-    echo ". ~/.zsh_aliases" >> ~/.zshrc
-    echo "${GREEN}======= Done ! =======${COL_RESET}"
-fi
-
-read -p "Clone your github project into your website path (y/n)? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    echoInfo "==> Cloning project into $PROJECT_PATH/$PROJECT_NAME "
-    mkdir ~/www
-    git clone $GITHUB_LINK $PROJECT_PATH/$PROJECT_NAME
-    cp ./ips.php $PROJECT_PATH/$PROJECT_NAME/web
-    echoSuccess "======= Done ! ======="
-fi

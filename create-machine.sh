@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-docker-machine stop dev
-docker-machine rm dev
+#docker-machine stop dev
+#docker-machine rm dev
 docker-machine create --driver virtualbox \
     --virtualbox-cpu-count "2" \
     --virtualbox-memory "4096" \
