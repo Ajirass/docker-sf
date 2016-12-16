@@ -87,7 +87,9 @@ install_github_ssh_key() {
 }
 
 echo "============================================================="
+echo
 echo "=============== Install Symfony3 Docker stack ==============="
+echo
 echo "============================================================="
 
 echo
@@ -119,7 +121,6 @@ fi
 echoInfo "==> Install brew-cask"
 # Homebrew Cask extends Homebrew and brings its elegance, simplicity, and speed to OS X applications and large binaries alike.
 brew tap caskroom/cask
-brew install brew-cask
 echoSuccess "======= Done ! ======="
 
 if  [[ "$(vboxmanage --version)" == 0 ]] ; then
@@ -146,15 +147,6 @@ done
 brew link --force gettext
 echoSuccess "======= Done ! ======="
 
-read -p "Install composer (y/n)? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    curl -sS https://getcomposer.org/installer | php
-    mv composer.phar /usr/local/bin/composer
-    echoSuccess "======= Done ! ======="
-fi
-
 cd $DOCKER_PATH
 
 read -p "Create docker-machine dev (y/n)? " -n 1 -r
@@ -170,7 +162,7 @@ then
     echoSuccess "======= Done ! ======="
 fi
 
-sh config_env.sh $PROJECT_PATH $DOCKER_PATH $(id -u)
+#sh config_env.sh $PROJECT_PATH $DOCKER_PATH $(id -u)
 
 echoInfo "==> Mount local path to doker-machine please wait ... "
 sleep 5
